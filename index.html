@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Clone</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="header">
+    <h1>Twitter Clone</h1>
+    <div class="search-section">
+        <span class="search-label">Search</span>
+        <label for="userSelect">
+            <select class="user-select" id="userSelect">
+                <option value="">Loading users...</option>
+            </select>
+        </label>
+    </div>
+</div>
+<div class="main-container">
+    <div class="header-image">
+            <img src="images/background.jpg" alt="">
+    </div>
+    <div class="profile-section">
+        <div class="profile-header">
+            <div class="profile-avatar" id="profileAvatar">
+                <img src="images/profile.png" alt="profile">
+            </div>
+            <div class="profile-info">
+                <h2 id="profileName"></h2>
+                <div class="profile-handle" id="profileHandle"></div>
+            </div>
+            <div class="profile-details">
+                <div id="profileWebsite"></div>
+                <div id="profileBio"></div>
+                <div id="profileLocation"></div>
+            </div>
+        </div>
+
+    </div>
+    <div class="tweets-section">
+        <div class="posts-section">
+            <div id="postsContainer">
+                <div class="loading">Loading posts...</div>
+            </div>
+        </div>
+        <div class="comments-section">
+            <div id="commentsContainer">
+                <div id="commentsHeader"></div>
+                <div class="loading">Loading comments...</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="dist/main.js"></script>
+</body>
+</html>
