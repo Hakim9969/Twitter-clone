@@ -112,7 +112,9 @@ async function loadComments(postId: number) {
 async function init() {
     await loadUsers();
     await loadUser(1);
-    await loadPosts(1);}
+    await loadPosts(1);
+await loadComments(1);
+}
 
 userSelect.addEventListener('change', async (e) => {
     const userId = Number(userSelect.value);

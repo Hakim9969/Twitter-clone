@@ -99,6 +99,7 @@ function init() {
         yield loadUsers();
         yield loadUser(1);
         yield loadPosts(1);
+        yield loadComments(1);
     });
 }
 userSelect.addEventListener('change', (e) => __awaiter(void 0, void 0, void 0, function* () {
