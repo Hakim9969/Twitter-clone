@@ -25,7 +25,6 @@ interface Comment {
 }
 
 
-
 const userSelect = document.getElementById('userSelect') as HTMLSelectElement;
 const profileName = document.getElementById('profileName')!;
 const profileHandle = document.getElementById('profileHandle')!;
@@ -44,19 +43,28 @@ function displayUser(user: User) {
     profileLocation.textContent = `${user.address.city}`;
 }
 
-async function displayPosts(posts: Post[], userId:number) {
-    const user  = await fetchUser(userId);
+async function displayPosts(posts: Post[], userId: number) {
+    const user = await fetchUser(userId);
     postsContainer.innerHTML = '';
     posts.forEach(post => {
         const div = document.createElement('div');
         div.classList.add('post');
         div.innerHTML = `
             <div>
-            <img src="images/profile.png" alt="profile" />
-        </div>
-        <div>
-            <h3> ${user.name}</h3>
+                 <img src="images/profile.png" alt="profile"/>
+             </div>
+        <div class="post-header">
+            <div class="top">
+                <h3>${user.name}</h3>
+                <span><img src="images/verify.png" alt="verify"/></span>
+                <span><img src="images/twitter.png" alt="twitter"/></span>
+            </div>
             <p> ${post.body}</p>
+            <div class="post-actions">
+                <span><img src="images/message.png" alt="comment" /> 200</span>
+                <span><img src="images/retweet.png" alt="retweet" /> 200</span>
+                <span><img src="images/heart.png" alt="like" /> 200</span>
+            </div>
         </div>
             `;
         div.onclick = () => loadComments(post.id);
@@ -70,51 +78,62 @@ function showComments(comments: Comment[], postId: number) {
     comments.forEach(comment => {
         const div = document.createElement('div');
         div.classList.add('comment');
-        div.innerHTML =  `${comment.name}${comment.body}`;
+        div.innerHTML = `
+                 <div class="comment-image">
+                    <img src="images/profile.png" alt="profile">
+                </div>          
+                <div class="comment-text">
+                    <h5>${comment.name}</h5>
+                    <p> ${comment.body} </p>
+                </div>`;
         commentsContainer.appendChild(div);
     })
 }
-async function fetchUser(userId:number):Promise<User> {
+
+async function fetchUser(userId: number): Promise<User> {
     const res = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`);
-    return  await res.json();
+    return await res.json();
 
 }
-// select users to display in the search container
+
+
 async function loadUsers() {
     const res = await fetch('https://jsonplaceholder.typicode.com/users');
-    const users:User[]  = await res.json();
+    const users: User[] = await res.json();
     userSelect.innerHTML = users.map(u => `<option value="${u.id}">${u.name}</option>`).join('');
 }
 
-// display users by id
+
 async function loadUser(userId: number) {
-    const user: User = await  fetchUser(userId);
+    const user: User = await fetchUser(userId);
     displayUser(user);
 }
 
-// display posts
+
 async function loadPosts(userId: number) {
     const res = await fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`);
     const posts: Post[] = await res.json();
     await displayPosts(posts, userId);
 }
 
-// comments
+
 async function loadComments(postId: number) {
     const res = await fetch(`https://jsonplaceholder.typicode.com/comments?postId=${postId}`);
     const comments: Comment[] = await res.json();
-    console.log('fetched comments',comments);
+    console.log('fetched comments', comments);
     showComments(comments, postId);
 }
 
 
-// init the users and posts
+
 async function init() {
     await loadUsers();
     await loadUser(1);
     await loadPosts(1);
-await loadComments(1);
+    await loadComments(1);
+
 }
+
 
 userSelect.addEventListener('change', async (e) => {
     const userId = Number(userSelect.value);
@@ -122,6 +141,7 @@ userSelect.addEventListener('change', async (e) => {
         await loadUser(userId);
         await loadPosts(userId);
         commentsContainer.innerHTML = '';
+        await  loadComments(userId);
     }
 });
 

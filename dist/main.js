@@ -33,11 +33,20 @@ function displayPosts(posts, userId) {
             div.classList.add('post');
             div.innerHTML = `
             <div>
-            <img src="images/profile.png" alt="profile" />
-        </div>
-        <div>
-            <h3> ${user.name}</h3>
+                 <img src="images/profile.png" alt="profile"/>
+             </div>
+        <div class="post-header">
+            <div class="top">
+                <h3>${user.name}</h3>
+                <span><img src="images/verify.png" alt="verify"/></span>
+                <span><img src="images/twitter.png" alt="twitter"/></span>
+            </div>
             <p> ${post.body}</p>
+            <div class="post-actions">
+                <span><img src="images/message.png" alt="comment" /> 200</span>
+                <span><img src="images/retweet.png" alt="retweet" /> 200</span>
+                <span><img src="images/heart.png" alt="like" /> 200</span>
+            </div>
         </div>
             `;
             div.onclick = () => loadComments(post.id);
@@ -51,7 +60,14 @@ function showComments(comments, postId) {
     comments.forEach(comment => {
         const div = document.createElement('div');
         div.classList.add('comment');
-        div.innerHTML = `${comment.name}${comment.body}`;
+        div.innerHTML = `
+                 <div class="comment-image">
+                    <img src="images/profile.png" alt="profile">
+                </div>          
+                <div class="comment-text">
+                    <h5>${comment.name}</h5>
+                    <p> ${comment.body} </p>
+                </div>`;
         commentsContainer.appendChild(div);
     });
 }
@@ -108,6 +124,7 @@ userSelect.addEventListener('change', (e) => __awaiter(void 0, void 0, void 0, f
         yield loadUser(userId);
         yield loadPosts(userId);
         commentsContainer.innerHTML = '';
+        yield loadComments(userId);
     }
 }));
 init().catch(err => console.error('Error initializing app:', err));
