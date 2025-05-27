@@ -8,67 +8,69 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const userSelect = document.getElementById('userSelect');
+// Updated element references with new class names
+const userDropdown = document.getElementById('userSelect');
 const profileName = document.getElementById('profileName');
 const profileHandle = document.getElementById('profileHandle');
 const profileWebsite = document.getElementById('profileWebsite');
 const profileBio = document.getElementById('profileBio');
 const profileLocation = document.getElementById('profileLocation');
-const postsContainer = document.getElementById('postsContainer');
-const commentsContainer = document.getElementById('commentsContainer');
+const tweetsFeed = document.getElementById('postsContainer');
+const repliesFeed = document.getElementById('commentsContainer');
 const commentsHeader = document.getElementById('commentsHeader');
 function displayUser(user) {
     profileName.textContent = user.name;
     profileHandle.textContent = `@${user.username}`;
     profileWebsite.textContent = `${user.website}`;
-    profileBio.textContent = ` ${user.company.catchPhrase}`;
+    profileBio.textContent = `${user.company.catchPhrase}`;
     profileLocation.textContent = `${user.address.city}`;
 }
 function displayPosts(posts, userId) {
     return __awaiter(this, void 0, void 0, function* () {
         const user = yield fetchUser(userId);
-        postsContainer.innerHTML = '';
+        tweetsFeed.innerHTML = '';
         posts.forEach(post => {
             const div = document.createElement('div');
             div.classList.add('post');
             div.innerHTML = `
             <div>
-                 <img src="images/profile.png" alt="profile"/>
-             </div>
-        <div class="post-header">
-            <div class="top">
-                <h3>${user.name}</h3>
-                <span><img src="images/verify.png" alt="verify"/></span>
-                <span><img src="images/twitter.png" alt="twitter"/></span>
+                <img src="images/profile.png" alt="profile"/>
             </div>
-            <p> ${post.body}</p>
-            <div class="post-actions">
-                <span><img src="images/message.png" alt="comment" /> 200</span>
-                <span><img src="images/retweet.png" alt="retweet" /> 200</span>
-                <span><img src="images/heart.png" alt="like" /> 200</span>
+            <div class="post-header">
+                <div class="top">
+                    <h3>${user.name}</h3>
+                    <span><img src="images/verify.png" alt="verify"/></span>
+                    <span><img src="images/twitter.png" alt="twitter"/></span>
+                </div>
+                <p>${post.body}</p>
+                <div class="post-actions">
+                    <span><img src="images/message.png" alt="comment" /> 200</span>
+                    <span><img src="images/retweet.png" alt="retweet" /> 200</span>
+                    <span><img src="images/heart.png" alt="like" /> 200</span>
+                </div>
             </div>
-        </div>
-            `;
+        `;
             div.onclick = () => loadComments(post.id);
-            postsContainer.appendChild(div);
+            tweetsFeed.appendChild(div);
         });
     });
 }
 function showComments(comments, postId) {
-    commentsContainer.innerHTML = '';
+    repliesFeed.innerHTML = '';
     commentsHeader.textContent = `post ${postId} comments`;
     comments.forEach(comment => {
         const div = document.createElement('div');
         div.classList.add('comment');
         div.innerHTML = `
-                 <div class="comment-image">
-                    <img src="images/profile.png" alt="profile">
-                </div>          
-                <div class="comment-text">
-                    <h5>${comment.name}</h5>
-                    <p> ${comment.body} </p>
-                </div>`;
-        commentsContainer.appendChild(div);
+            <div class="comment-image">
+                <img src="images/profile.png" alt="profile">
+            </div>
+            <div class="comment-text">
+                <h5>${comment.name}</h5>
+                <p>${comment.body}</p>
+            </div>
+        `;
+        repliesFeed.appendChild(div);
     });
 }
 function fetchUser(userId) {
@@ -77,22 +79,19 @@ function fetchUser(userId) {
         return yield res.json();
     });
 }
-// select users to display in the search container
 function loadUsers() {
     return __awaiter(this, void 0, void 0, function* () {
         const res = yield fetch('https://jsonplaceholder.typicode.com/users');
         const users = yield res.json();
-        userSelect.innerHTML = users.map(u => `<option value="${u.id}">${u.name}</option>`).join('');
+        userDropdown.innerHTML = users.map(u => `<option value="${u.id}">${u.name}</option>`).join('');
     });
 }
-// display users by id
 function loadUser(userId) {
     return __awaiter(this, void 0, void 0, function* () {
         const user = yield fetchUser(userId);
         displayUser(user);
     });
 }
-// display posts
 function loadPosts(userId) {
     return __awaiter(this, void 0, void 0, function* () {
         const res = yield fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`);
@@ -100,7 +99,6 @@ function loadPosts(userId) {
         yield displayPosts(posts, userId);
     });
 }
-// comments
 function loadComments(postId) {
     return __awaiter(this, void 0, void 0, function* () {
         const res = yield fetch(`https://jsonplaceholder.typicode.com/comments?postId=${postId}`);
@@ -109,7 +107,6 @@ function loadComments(postId) {
         showComments(comments, postId);
     });
 }
-// init the users and posts
 function init() {
     return __awaiter(this, void 0, void 0, function* () {
         yield loadUsers();
@@ -118,12 +115,12 @@ function init() {
         yield loadComments(1);
     });
 }
-userSelect.addEventListener('change', (e) => __awaiter(void 0, void 0, void 0, function* () {
-    const userId = Number(userSelect.value);
+userDropdown.addEventListener('change', () => __awaiter(void 0, void 0, void 0, function* () {
+    const userId = Number(userDropdown.value);
     if (userId) {
         yield loadUser(userId);
         yield loadPosts(userId);
-        commentsContainer.innerHTML = '';
+        repliesFeed.innerHTML = '';
         yield loadComments(userId);
     }
 }));
