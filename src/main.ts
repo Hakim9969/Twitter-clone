@@ -79,12 +79,19 @@ function showComments(comments: Comment[], postId: number) {
         const div = document.createElement('div');
         div.classList.add('comment');
         div.innerHTML = `
-            <div class="comment-image">
-                <img src="images/profile.png" alt="profile">
+            <div>
+                <img src="images/profile.png" alt="profile"/>
             </div>
-            <div class="comment-text">
-                <h5>${comment.name}</h5>
+            <div class="post-header">
+                <div class="top">
+                    <h3>${comment.name}</h3>
+                </div>
                 <p>${comment.body}</p>
+                <div class="post-actions">
+                    <span><img src="images/message.png" alt="comment" /> 200</span>
+                    <span><img src="images/retweet.png" alt="retweet" /> 200</span>
+                    <span><img src="images/heart.png" alt="like" /> 200</span>
+                </div>
             </div>
         `;
         repliesFeed.appendChild(div);

@@ -175,10 +175,11 @@ body {
     gap: 15px;
     padding: 20px;
     border-bottom: 1px solid #ccc;
-    font-family: sans-serif;
+    font-family: Arial, sans-serif;
 }
 
-.comment-image img {
+
+.comment img {
     width: 100px;
     height: 150px;
     object-fit: cover;
