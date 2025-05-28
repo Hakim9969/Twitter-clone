@@ -24,7 +24,7 @@ interface Comment {
     body: string;
 }
 
-// Updated element references with new class names
+
 const userDropdown = document.getElementById('userSelect') as HTMLSelectElement;
 const profileName = document.getElementById('profileName')!;
 const profileHandle = document.getElementById('profileHandle')!;

@@ -8,7 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-// Updated element references with new class names
 const userDropdown = document.getElementById('userSelect');
 const profileName = document.getElementById('profileName');
 const profileHandle = document.getElementById('profileHandle');
